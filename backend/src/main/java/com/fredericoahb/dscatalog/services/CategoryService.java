@@ -12,6 +12,7 @@ import com.fredericoahb.dscatalog.dto.CategoryDTO;
 import com.fredericoahb.dscatalog.entities.Category;
 import com.fredericoahb.dscatalog.repositories.CategoryRepository;
 import com.fredericoahb.dscatalog.services.exceptions.EntityNotFoundException;
+import com.fredericoahb.dscatalog.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class CategoryService {
@@ -40,6 +41,19 @@ public class CategoryService {
 		entity.setName(dto.getName());
 		entity = repository.save(entity);
 		return new CategoryDTO(entity);
+	}
+	
+	@Transactional
+	public CategoryDTO update(Long id, CategoryDTO dto) {
+
+		try {
+		Category entity = repository.getOne(id); // .getOne() dont touch the DB. Instantiates a provisory object with that ID. Just touch the DB when to save
+		entity.setName(dto.getName());
+		entity = repository.save(entity);
+		return new CategoryDTO(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id not found:" + id);
+		}
 	}
 	
 	
