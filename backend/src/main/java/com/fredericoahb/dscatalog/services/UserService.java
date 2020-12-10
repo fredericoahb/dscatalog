@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fredericoahb.dscatalog.dto.RoleDTO;
 import com.fredericoahb.dscatalog.dto.UserDTO;
 import com.fredericoahb.dscatalog.dto.UserInsertDTO;
+import com.fredericoahb.dscatalog.dto.UserUpdateDTO;
 import com.fredericoahb.dscatalog.entities.Role;
 import com.fredericoahb.dscatalog.entities.User;
 import com.fredericoahb.dscatalog.repositories.RoleRepository;
@@ -27,10 +28,10 @@ public class UserService {
 
 	@Autowired
 	private UserRepository repository;
-
+	
 	@Autowired
 	private RoleRepository roleRepository;
-
+	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder; //usado pra encodar a senha que vem no UserInsertDTO. Criado no AppConfig
 
@@ -60,7 +61,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDTO update(Long id, UserDTO dto) {
+	public UserDTO update(Long id, UserUpdateDTO dto) {
 		try {
 			User entity = repository.getOne(id); // .getOne() dont touch the DB. Instantiates a provisory object
 													// with that ID. Just touch the DB when to save
@@ -76,7 +77,7 @@ public class UserService {
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
-
+			
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id not found.");
 		} catch (DataIntegrityViolationException e) { // integrity. in case that there are products with the category,
@@ -91,7 +92,7 @@ public class UserService {
 		entity.setFirstName(dto.getFirstName());
 		entity.setLastName(dto.getLastName());
 		entity.setEmail(dto.getEmail());
-
+		
 		entity.getRoles().clear();
 		for (RoleDTO roleDto : dto.getRoles()) {
 			Role role = roleRepository.getOne(roleDto.getId());
