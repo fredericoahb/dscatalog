@@ -1,5 +1,7 @@
 package com.fredericoahb.dscatalog.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -10,14 +12,16 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
+import com.fredericoahb.dscatalog.components.JwtTokenEnhancer;
+
 @Configuration
-@EnableAuthorizationServer //fazer com a classe represente o Authorization Server do Oauth
+@EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-	//@value para ler as variaveis do arquivo de config (.properties) e repassar onde necessario
 	@Value("${security.oauth2.client.client-id}")
 	private String clientId;
 	
@@ -39,29 +43,37 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
+	@Autowired
+	private JwtTokenEnhancer tokenEnhancer;
+	
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-		security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated");
+		security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
 	}
 
-	//define no ClientDetailsServiceConfigurer como vai ser a autenticacao e os dados da aplicacao(details) para geracao do token de autenticacao da aplicacao
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
-			.withClient(clientId) //nome da aplicacao. Depois no frontend devera ser informado essa informacao
-			.secret(passwordEncoder.encode(clientSecret)) //senha da aplicacao
-			.scopes("read", "write") //tipo de acesso que será dado
-			.authorizedGrantTypes("password") //tipo de acesso
-			.accessTokenValiditySeconds(jwtDuration); //tempo de expiracao do token (1dia)
+		.withClient(clientId)
+		.secret(passwordEncoder.encode(clientSecret))
+		.scopes("read", "write")
+		.authorizedGrantTypes("password")
+		.accessTokenValiditySeconds(jwtDuration);
+		
 	}
 
-	//quem vai autorizar e qual é o formato do token aceito.
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+		
+		TokenEnhancerChain chain = new TokenEnhancerChain();
+		chain.setTokenEnhancers(Arrays.asList(accessTokenConverter,tokenEnhancer ));
+		
+		
 		endpoints.authenticationManager(authenticationManager)
-		.tokenStore(tokenStore) //responsavel por processar o token
-		.accessTokenConverter(accessTokenConverter);
+		.tokenStore(tokenStore)
+		.accessTokenConverter(accessTokenConverter)
+		.tokenEnhancer(chain);
 	}
-
+	
 	
 }
