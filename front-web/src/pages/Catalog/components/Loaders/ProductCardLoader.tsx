@@ -6,7 +6,7 @@ import { generateList } from "core/utils/list";
 
 const ProductCardLoader = () => {
 
-   const loaderItems = generateList(8);
+   const loaderItems = generateList(12);
 
    return (
       <>
