@@ -23,7 +23,7 @@ const Catalog = () => {
    useEffect(() => {
       const params = {
          page: activePage,
-         linesPerPage: 4 //quantidade de items que mostra na tela
+         linesPerPage: 12 //quantidade de items que mostra na tela
       }
 
       //Acessando a API: em package.json foi colocada a config "proxy": "http://localhost:8080", para evitar o problema de CORS ao fazer as requisicoes a API 
