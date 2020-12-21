@@ -7,7 +7,7 @@ DS Catalog é uma aplicação full stack web que está em desenvolvimento.
 
 A futura aplicação simula um catalogo de produtos categorizados e com upload de imagens, controle de acesso e usuários.
 
-## Layout
+## Layout Web
 ![DsCatalog Home](https://github.com/fredericoahb/assets/blob/master/dscatalog/dscatalog_page_home.png)
 
 ![DsCatalog Catalogo](https://github.com/fredericoahb/assets/blob/master/dscatalog/dscatalog_page_catalog.png)
@@ -69,3 +69,5 @@ npm run start
 ## Autor
 
 Frederico Homobono
+
+https://www.linkedin.com/in/frederico-homobono-0002b37/
