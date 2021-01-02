@@ -3,6 +3,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/fredericoahb/dscatalog)
 ![GitHub language count](https://img.shields.io/github/languages/count/fredericoahb/dscatalog)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/fredericoahb/dscatalog)
+![GitHub repo size](https://img.shields.io/github/repo-size/fredericoahb/dscatalog)
 
 # Sobre o projeto
 
