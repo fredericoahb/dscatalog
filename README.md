@@ -1,6 +1,8 @@
 ﻿# DS Catalog
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/fredericoahb/citacoes/blob/master/LICENSE) 
 ![GitHub last commit](https://img.shields.io/github/last-commit/fredericoahb/dscatalog)
+![GitHub language count](https://img.shields.io/github/languages/count/fredericoahb/dscatalog)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/fredericoahb/dscatalog)
 
 # Sobre o projeto
 
